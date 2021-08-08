@@ -90,6 +90,8 @@ telefono varchar(15) not null
 )ENGINE=InnoDB DEFAULT CHARSET =utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 insert into sede values ('1', 'Portales', 'ZonaPortales', '25262422');
+insert into sede values ('2', 'VillaNueva', 'Villa Nueva', '25262422');
+insert into sede values ('3', 'SanKris', 'San Cristobal', '25262422');
 
 create table PUESTO(
 id_puesto varchar(15) primary key,
@@ -98,7 +100,10 @@ status_puesto varchar(1)
 )ENGINE=InnoDB DEFAULT CHARSET =utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 insert into puesto values ("1" , "Jefe", "1");
-select * from puesto;
+insert into puesto values ("2" , "Gerente", "1");
+insert into puesto values ("3" , "Conserje", "1");
+
+select id_puesto from puesto where nombre_puesto = 'Jefe';
 
 create table PACIENTE(
 id_paciente varchar(15) not null,

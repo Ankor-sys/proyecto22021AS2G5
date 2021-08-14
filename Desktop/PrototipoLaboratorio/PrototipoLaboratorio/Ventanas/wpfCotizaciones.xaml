@@ -85,6 +85,7 @@
             <DataGrid x:Name="dgExamenes" Margin="601,122,105,273"/>
             <Button x:Name="btnCargar" Content="Cargar Tabla" HorizontalAlignment="Left" Margin="1118,398,0,0" VerticalAlignment="Top" Height="34" Width="87" Click="btnCargar_Click"/>
             <Label Content="CODIGO FACTURA:" HorizontalAlignment="Left" Height="36" Margin="560,15,0,0" VerticalAlignment="Top" Width="109"/>
+            <Label Content="-" HorizontalAlignment="Left" Margin="480,152,0,0" VerticalAlignment="Top"/>
         </Grid>
         <Label x:Name="lblIdusuario_Copy1" Content="Examen:" HorizontalAlignment="Left" Margin="26,0,0,0" VerticalAlignment="Center" Height="38" Width="88" FontSize="14" FontFamily="Century Gothic" VerticalContentAlignment="Center"/>
         <TextBox x:Name="txtPrecio" HorizontalAlignment="Left" Margin="224,485,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="232" Height="38" TextAlignment="Left" FontSize="14" FontFamily="Century Gothic" VerticalContentAlignment="Center" BorderBrush="{x:Null}" IsEnabled="False">

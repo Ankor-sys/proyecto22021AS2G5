@@ -30,12 +30,7 @@ insert into usuarios values ("2", "1", "Sebas", "SebasYMel2021", "1");
 select * from usuarios;
 #FORMAS DE PAGO Y RELACIONADOS
 
-create table MONEDA(
-id_moneda varchar(15) primary key not null,
-nombre_moneda varchar(30) not null,
-tipo_cambio float not null,
-status_moneda varchar(1)
-)ENGINE=InnoDB DEFAULT CHARSET =utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 
 /*
 create table BANCOS(
@@ -164,50 +159,86 @@ id_requerimiento_paciente varchar(15) primary key not null,
 descripcion_requerimiento_paciente varchar(100) not null
 )ENGINE=InnoDB DEFAULT CHARSET =utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+insert into REQUERIMIENTOS_PACIENTE values ("1" , "12 HORAS DE AYUNO, ULTIMA COMIDA HAYA SIDO LIVIANA");
+insert into REQUERIMIENTOS_PACIENTE values ("2" , "DESAYUNAR Y DESPUES REGRESAR POR EL EXAMEN");
+insert into REQUERIMIENTOS_PACIENTE values ("3" , "TOMAR LA PRIMERA MUESTRA DE LA MAÑANA EN FRASCO ESTÉRIL");
+insert into REQUERIMIENTOS_PACIENTE values ("4" , "PRIMERA ORINA DE LA MAÑANA CON TECNICA MEDIO VUELO EN FRASCO ESTERIL");
 select * from REQUERIMIENTOS_PACIENTE;
 
 create table TIPO_EXAMEN(
 id_tipo_examen varchar(15) primary key not null,
 nombre_tipo_examen varchar(30) not null
 )ENGINE=InnoDB DEFAULT CHARSET =utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+insert into tipo_examen values ("1", "Hematología");
+insert into tipo_examen values ("2", "Heces");
+insert into tipo_examen values ("3", "Orina");
+insert into tipo_examen values ("4", "Glucosa");
+insert into tipo_examen values ("5", "MRA (Resonancia Magnética");
 
 create table EXAMEN(
 id_examen varchar(15) primary key not null,
 nombre_examen varchar(30) not null,
 id_tipo_examen varchar(15) not null,
-id_requerimiento_clinico varchar(15) not null,
 id_requerimiento_paciente varchar(15) not null,
 precio_examen float not null,
 
 foreign key (id_tipo_examen) references TIPO_EXAMEN(id_tipo_examen),
-foreign key (id_requerimiento_clinico) references REQUERIMIENTOS_CLINICOS(id_requerimiento_clinico),
 foreign key (id_requerimiento_paciente) references REQUERIMIENTOS_PACIENTE(id_requerimiento_paciente)
 )ENGINE=InnoDB DEFAULT CHARSET =utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+insert into EXAMEN values ("1", "Sangre", "1", "1", "50");
+insert into EXAMEN values ("2", "Triglicéridos", "1", "1", "35");
+insert into EXAMEN values ("3", "Colésterol", "1", "1", "40");
+
+insert into EXAMEN values ("4", "Heces", "2", "3", "50");
+insert into EXAMEN values ("5", "Coprocultivo", "2", "3", "75");
+
+insert into EXAMEN values ("6", "Urocultivo", "3", "4", "80");
+insert into EXAMEN values ("7", "Creatinina", "3", "4", "50");
+insert into EXAMEN values ("14", "Orina Simple", "3", "4", "40");
+
+insert into EXAMEN values ("8", "Glucosa Preprandial", "4", "1", "35");
+insert into EXAMEN values ("9", "Glucosa Postprandial", "4", "2", "35");
+insert into EXAMEN values ("10", "Glicosilada", "4", "1", "60");
+
+insert into EXAMEN values ("11", "MRA Cervical", "5", "2", "500");
+insert into EXAMEN values ("12", "MRA de tórax", "5", "2", "500");
+insert into EXAMEN values ("13", "MRA de cabeza", "5", "2", "500");
+
+select * from examen;
+
 create table PAQUETE_ENCABEZADO(
 id_paquete varchar(15) primary key not null,
-nombre_paquete varchar(30) not null
+nombre_paquete varchar(100) not null, 
+precio float not null
 )ENGINE=InnoDB DEFAULT CHARSET =utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+insert into PAQUETE_ENCABEZADO values ( "1", "Renal", 150);
+insert into PAQUETE_ENCABEZADO values ( "2", "Preoperatorio", 125);
+insert into PAQUETE_ENCABEZADO values ( "3", "Lipidos", 200);
 
 create table PAQUETE_DETALLE(
 id_detalle varchar(15) primary key not null,
+id_paquete_encabezado varchar(15) not null,
 id_paquete varchar(15) not null,
+id_tipo_examen varchar(15) not null,
 id_examen varchar(30) not null,
 
 foreign key (id_paquete) references PAQUETE_ENCABEZADO(id_paquete),
-foreign key (id_examen) references EXAMEN(id_examen)
+foreign key (id_examen) references EXAMEN(id_examen), 
+foreign key (id_tipo_examen) references TIPO_EXAMEN(id_tipo_examen)
 )ENGINE=InnoDB DEFAULT CHARSET =utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 create table CITAS(
 id_cita varchar(15) primary key not null,
 id_paciente varchar(15) not null,
-id_encargado varchar(15) not null,
+id_empleado varchar(15) not null,
 fecha_cita date not null,
 descripcion varchar(150) not null,
 status_cita varchar(1) not null,
 
 foreign key (id_paciente) references PACIENTE(id_paciente),
-foreign key (id_encargado) references EMPLEADO(id_empleado)
+foreign key (id_empleado) references EMPLEADO(id_empleado)
 )ENGINE=InnoDB DEFAULT CHARSET =utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 create table TIPO_MUESTRA(
@@ -241,20 +272,23 @@ id_paciente varchar(15) not null,
 id_empleado varchar(15) not null,
 fecha_factura date not null,
 hora_factura time not null,
-
+total_factura float not null,
 foreign key (id_paciente) references PACIENTE(id_paciente),
 foreign key (id_empleado) references EMPLEADO(id_empleado)
 )ENGINE=InnoDB DEFAULT CHARSET =utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+select * from encabezado_factura;
+
 create table DETALLE_FACTURA(
-id_detalle_factura varchar(15) primary key not null,
+id_detalle_factura int auto_increment primary key not null,
 id_encabezado_factura varchar(15) not null,
 descripcion varchar(15) not null,
-total_factura float not null,
+precio float not null,
 
 foreign key (id_encabezado_factura) references ENCABEZADO_FACTURA(id_encabezado_factura)
 )ENGINE=InnoDB DEFAULT CHARSET =utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+select * from detalle_factura;
 
 create table ENCABEZADO_EXPEDIENTE(
 id_encabezado_expediente varchar(15) primary key not null,
@@ -270,23 +304,26 @@ fecha_expediente date not null,
 hora_expediente time not null,
 descripcion_resultados varchar(200) not null,
 
-foreign key (id_encabezado_expediente) references ENCABEZADO_EXPEDIENTE(id_encabezado_expediente),
-foreign key (descripcion_resultados) references DETALLE_FACTURA(id_detalle_factura)
+foreign key (id_encabezado_expediente) references ENCABEZADO_EXPEDIENTE(id_encabezado_expediente)
 )ENGINE=InnoDB DEFAULT CHARSET =utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-create table ENCABEZADO_COTIZACION(
-id_encabezado_cotizacion varchar(15) primary key not null,
+create table COTIZACION(
+id_cotizacion int auto_increment primary key not null,
 id_paciente varchar(15) not null,
-id_empleado varchar(15) not null,
 fecha_cotizacion date not null,
-hora_cotizacion time not null,
+id_paquete varchar(15),
+id_tipo_examen varchar(15),
+nombre_examen varchar(30),
+precio float not null,
 
-foreign key (id_paciente) references PACIENTE(id_paciente),
-foreign key (id_empleado) references EMPLEADO(id_empleado)
+foreign key (id_paciente) references PACIENTE(id_paciente)
+
 )ENGINE=InnoDB DEFAULT CHARSET =utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+select * from cotizacion;
 
 #eliminar carrito y poner solo detalle cotizacion
-
+/*
 create table DETALLE_COTIZACION(
 id_detalle_cotizacion varchar(15) primary key not null,
 id_encabezado_cotizacion varchar(15) not null,
@@ -297,7 +334,7 @@ total_cotizacion float not null,
 foreign key (id_encabezado_cotizacion) references ENCABEZADO_COTIZACION(id_encabezado_cotizacion),
 foreign key (id_examen) references EXAMEN(id_examen),
 foreign key (id_paquete) references PAQUETE_ENCABEZADO(id_paquete)
-)ENGINE=InnoDB DEFAULT CHARSET =utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+)ENGINE=InnoDB DEFAULT CHARSET =utf8mb4 COLLATE=utf8mb4_0900_ai_ci;*/
 
 create table CAJA(
 id_caja varchar(15) primary key not null,
@@ -310,7 +347,15 @@ foreign key (id_empleado) references EMPLEADO(id_empleado)
 )ENGINE=InnoDB DEFAULT CHARSET =utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
+create table MONEDA(
+id_moneda varchar(15) primary key not null,
+id_factura varchar(15) not null,
+nombre_moneda varchar(30) not null,
+tipo_cambio float not null,
+status_moneda varchar(1),
 
+foreign key (id_factura) references ENCABEZADO_FACTURA(id_encabezado_factura)
+)ENGINE=InnoDB DEFAULT CHARSET =utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 #INDICES
 create table FORMAS_PAGO(
